@@ -7,5 +7,8 @@ const nextConfig = {
     };
     return config;
   },
+  images: {
+    domains: ["encrypted-tbn0.gstatic.com", "images.unsplash.com"],
+  }
 };
 module.exports = nextConfig;
