@@ -360,6 +360,11 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
+"@popperjs/core@2.9.1":
+  version "2.9.1"
+  resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.9.1.tgz#7f554e7368c9ab679a11f4a042ca17149d70cf12"
+  integrity sha512-DvJbbn3dUgMxDnJLH+RZQPnXak1h4ZVYQ7CWiFWjQwBFkVajT4rfw2PdpHLTSTwxrYfnoEXkuBiwkDm6tPMQeA==
+
 "@reduxjs/toolkit@^1.9.2":
   version "1.9.2"
   resolved "https://registry.yarnpkg.com/@reduxjs/toolkit/-/toolkit-1.9.2.tgz#4cd153491118038e2eebcb63b2264e42a8a2d74c"

@@ -2,11 +2,11 @@ import React from "react";
 
 const CollectionsIcon = ({ className }) => {
   return (
-    <div>
+    <div style={{ paddingRight: '1rem' }}>
       <svg
-        width="19"
-        height="18"
-        viewBox="0 0 19 18"
+        width="24"
+        height="24"
+        viewBox="0 0 16 16"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         className={className}

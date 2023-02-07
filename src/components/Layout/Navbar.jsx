@@ -16,7 +16,7 @@ export const Navbar = () => {
           <Link className={activeClassHandler} href="/collectors">
             <span
               aria-hidden
-              className="flex justify-around h-[2rem] w-[200px]"
+              className="flex justify-center  h-[2rem]"
             >
               <CollectorsIcons />
               <p>
@@ -29,7 +29,7 @@ export const Navbar = () => {
           <Link className={activeClassHandler} href="/collections">
             <span
               aria-hidden
-              className="flex justify-around h-[2rem] w-[200px]"
+              className="flex justify-center  h-[2rem]"
             >
               <CollectionsIcons />
               <p>

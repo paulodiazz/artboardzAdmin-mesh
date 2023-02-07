@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import CameraIcon from "../../Assets/Icons/CameraIcon";
 import { UIActions } from "../../store/redux-store/UI-slice";
@@ -17,8 +17,27 @@ const GeneralDescForm = () => {
   const instagramRef = useRef();
   const [artImage, setArtImage] = useState(null);
   const [artLocationImage, setArtLocationImage] = useState(null);
-  const [personalImage, setPersonalImageRef] = useState(null);
+  const [personalImage, setPersonalImage] = useState(null);
   const dispatch = useDispatch();
+
+  // image preview
+  const [artImageUrl, setArtImageUrl] = useState(null);
+  const [artLocationImageUrl, setArtLocationImageUrl] = useState(null);
+  const [personalImageUrl, setPersonalImageUrl] = useState(null);
+  useEffect(() => {
+    if (artImage) {
+      setArtImageUrl(URL.createObjectURL(artImage));
+    }
+    if (artLocationImage) {
+      setArtLocationImageUrl(URL.createObjectURL(artLocationImage));
+    }
+    if (personalImage) {
+      setPersonalImageUrl(URL.createObjectURL(personalImage));
+    }
+    console.log("artImageUrl: ", artImageUrl)
+    console.log("artLocationImageUrl", artLocationImageUrl)
+    console.log("personalImageUrl: ", personalImageUrl)
+  }, [artImage, artLocationImage, personalImage]);
 
   const hideFormHandler = (evt) => {
     evt.preventDefault();
@@ -193,15 +212,18 @@ const GeneralDescForm = () => {
           htmlFor="Artboard image"
           className="focus:bg-transparent bg-[#272832] focus:outline-white focus:outline rounded-md h-[150px] text-base px-3 flex items-center justify-center"
         >
-          <CameraIcon />
+          {artImage && artImageUrl ?
+            <img src={artImageUrl} style={{height: '100%'}} />
+            :
+            <CameraIcon />
+          }
         </label>
         <input
           type="file"
           name="Artboard image"
           id="Artboard image"
-          className=""
-          accept="image/png, image/jpeg"
           onChange={(e) => setArtImage(e.target.files[0])}
+          accept="image/png, image/jpeg"
           hidden
         />
       </div>
@@ -210,10 +232,14 @@ const GeneralDescForm = () => {
           Upload your Artboard location image
         </span>
         <label
-          htmlFor="Artboard image"
+          htmlFor="Artboard location image"
           className="focus:bg-transparent bg-[#272832] focus:outline-white focus:outline rounded-md h-[150px] text-base px-3 flex items-center justify-center"
         >
-          <CameraIcon />
+          {artLocationImage && artLocationImageUrl ?
+            <img src={artLocationImageUrl} style={{height: '100%'}} />
+            :
+            <CameraIcon />
+          }
         </label>
         <input
           type="file"
@@ -232,13 +258,17 @@ const GeneralDescForm = () => {
           htmlFor="personal/working image"
           className="focus:bg-transparent bg-[#272832] focus:outline-white focus:outline rounded-md h-[150px] text-base px-3 flex items-center justify-center"
         >
-          <CameraIcon />
+          {personalImage && personalImageUrl ?
+            <img src={personalImageUrl} style={{height: '100%'}} />
+            :
+            <CameraIcon />
+          }
         </label>
         <input
           type="file"
           name="personal/working image"
           id="personal/working image"
-          onChange={(e) => setPersonalImageRef(e.target.files[0])}
+          onChange={(e) => setPersonalImage(e.target.files[0])}
           accept="image/png, image/jpeg"
           hidden
         />
