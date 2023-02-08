@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import CameraIcon from "../../Assets/Icons/CameraIcon";
 import { UIActions } from "../../store/redux-store/UI-slice";
+import Image from "next/image";
 
 const GeneralDescForm = () => {
   const policyRef = useRef();
@@ -213,7 +214,7 @@ const GeneralDescForm = () => {
           className="focus:bg-transparent bg-[#272832] focus:outline-white focus:outline rounded-md h-[150px] text-base px-3 flex items-center justify-center"
         >
           {artImage && artImageUrl ?
-            <img src={artImageUrl} style={{height: '100%'}} />
+            <Image src={artImageUrl} style={{height: '100%'}} />
             :
             <CameraIcon />
           }
@@ -236,7 +237,7 @@ const GeneralDescForm = () => {
           className="focus:bg-transparent bg-[#272832] focus:outline-white focus:outline rounded-md h-[150px] text-base px-3 flex items-center justify-center"
         >
           {artLocationImage && artLocationImageUrl ?
-            <img src={artLocationImageUrl} style={{height: '100%'}} />
+            <Image src={artLocationImageUrl} style={{height: '100%'}} />
             :
             <CameraIcon />
           }
@@ -259,7 +260,7 @@ const GeneralDescForm = () => {
           className="focus:bg-transparent bg-[#272832] focus:outline-white focus:outline rounded-md h-[150px] text-base px-3 flex items-center justify-center"
         >
           {personalImage && personalImageUrl ?
-            <img src={personalImageUrl} style={{height: '100%'}} />
+            <Image src={personalImageUrl} style={{height: '100%'}} />
             :
             <CameraIcon />
           }

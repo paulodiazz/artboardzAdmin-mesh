@@ -1,5 +1,4 @@
 import Head from "next/head";
-import { CardanoWallet, MeshBadge } from "@meshsdk/react";
 import CollectionBoard from '../components/Collections/CollectionBoard';
 import { useEffect } from "react";
 
@@ -16,6 +15,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <CollectionBoard />
+    
     </>
        
 
