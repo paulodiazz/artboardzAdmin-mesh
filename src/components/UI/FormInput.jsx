@@ -14,5 +14,6 @@ const FormInput = forwardRef((ref, name, inputProps) => {
     </>
   );
 });
+FormInput.displayName = 'FormInput';
 
 export default FormInput;
