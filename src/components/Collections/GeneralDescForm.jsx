@@ -8,37 +8,50 @@ const GeneralDescForm = () => {
   const policyRef = useRef();
   const artistNameRef = useRef();
   const artTitleRef = useRef();
-  const locationRef = useRef();
+  const mintDateRef = useRef();
+  const mintPriceRef = useRef();
+  const newReleaseRef = useRef();
   const supplyRef = useRef();
+  const royaltyRef= useRef();
+  const countryRef= useRef();
+  const cityRef= useRef();
+  const NMKRRef= useRef();
+  const JPGRef= useRef();
   const artDescRef = useRef();
   const aboutMeRef = useRef();
   const mintingDetailRef = useRef();
   const twitterRef = useRef();
   const discordRef = useRef();
   const instagramRef = useRef();
-  const [artImage, setArtImage] = useState(null);
-  const [artLocationImage, setArtLocationImage] = useState(null);
-  const [personalImage, setPersonalImage] = useState(null);
+  const [Banner, setBanner] = useState(null);
+  const [Artist, setArtist] = useState(null);
+  const [digitalArtboard, setdigitalArtboard] = useState(null);
+  const [physicalArtboard, setphysicalArtboard] = useState(null);
   const dispatch = useDispatch();
 
   // image preview
-  const [artImageUrl, setArtImageUrl] = useState(null);
-  const [artLocationImageUrl, setArtLocationImageUrl] = useState(null);
-  const [personalImageUrl, setPersonalImageUrl] = useState(null);
+  const [BannerUrl, setBannerUrl] = useState(null);
+  const [ArtistUrl, setArtistUrl] = useState(null);
+  const [digitalArtboardUrl, setdigitalArtboardUrl] = useState(null);
+  const [physicalArtboardUrl, setphysicalArtboardUrl] = useState(null);
   useEffect(() => {
-    if (artImage) {
-      setArtImageUrl(URL.createObjectURL(artImage));
+    if (Banner) {
+      setBannerUrl(URL.createObjectURL(Banner));
     }
-    if (artLocationImage) {
-      setArtLocationImageUrl(URL.createObjectURL(artLocationImage));
+    if (Artist) {
+      setArtistUrl(URL.createObjectURL(Artist));
     }
-    if (personalImage) {
-      setPersonalImageUrl(URL.createObjectURL(personalImage));
+    if (digitalArtboard) {
+      setdigitalArtboardUrl(URL.createObjectURL(digitalArtboard));
     }
-    console.log("artImageUrl: ", artImageUrl)
-    console.log("artLocationImageUrl", artLocationImageUrl)
-    console.log("personalImageUrl: ", personalImageUrl)
-  }, [artImage, artLocationImage, personalImage]);
+    if (physicalArtboard) {
+      setdigitalArtboardUrl(URL.createObjectURL(physicalArtboard));
+    }
+    console.log("BannerUrl: ", BannerUrl)
+    console.log("ArtistUrl", ArtistUrl)
+    console.log("digitalArtboardUrl: ", digitalArtboardUrl)
+    console.log("physicalArtboardUrl: ", physicalArtboardUrl)
+  }, [Banner, Artist, digitalArtboard, physicalArtboardUrl]);
 
   const hideFormHandler = (evt) => {
     evt.preventDefault();
@@ -52,22 +65,31 @@ const GeneralDescForm = () => {
       policy: policyRef.current.value,
       artistName: artistNameRef.current.value,
       artTitle: artTitleRef.current.value,
-      location: locationRef.current.value,
+      mintDate: mintDateRef.current.value,
+      mintPrice: mintPriceRef.current.value,
+      newrelease: newReleaseRef.current.value,
       supply: supplyRef.current.value,
+      royalty: royaltyRef.current.value,
+      country: countryRef.current.value,
+      NMKR: NMKRRef.current.value,
+      JPG: JPGRef.current.value,
+      city: cityRef.current.value,
       artDescription: artDescRef.current.value,
       aboutMe: aboutMeRef.current.value,
       mintingDetail: mintingDetailRef.current.value,
       twitter: twitterRef.current.value,
       discord: discordRef.current.value,
       instagram: instagramRef.current.value,
-      artImage: artImage,
-      artLocationImage: artLocationImage,
-      personalImage: personalImage,
+      Banner: Banner,
+      Artist: Artist,
+      digitalArtboard: digitalArtboard,
+      physicalArtboard: physicalArtboard,
+    
     };
   };
 
   return (
-    <form className="grid grid-cols-2 gap-4" onSubmit={formSubmitHandler}>
+    <form className="grid grid-cols-3 gap-4" onSubmit={formSubmitHandler}>
       <div className="flex flex-col">
         <label htmlFor="policy" className="text-[#B3B5BD] text-base">
           Policy
@@ -77,6 +99,19 @@ const GeneralDescForm = () => {
           name="policy"
           id="policy"
           ref={policyRef}
+          className="focus:bg-transparent bg-[#272832] focus:outline-white focus:outline rounded-md h-11 text-base px-3"
+        />
+      </div>
+     
+      <div className="flex flex-col">
+        <label htmlFor="Artboard Title" className="text-[#B3B5BD] text-base">
+          Artboard Title
+        </label>
+        <input
+          type="text"
+          name="Artboard Title"
+          id="Artboard Title"
+          ref={artTitleRef}
           className="focus:bg-transparent bg-[#272832] focus:outline-white focus:outline rounded-md h-11 text-base px-3"
         />
       </div>
@@ -93,31 +128,32 @@ const GeneralDescForm = () => {
         />
       </div>
       <div className="flex flex-col">
-        <label htmlFor="Artboard Title" className="text-[#B3B5BD] text-base">
-          Artboard Title
+        <label htmlFor="Mint Date" className="text-[#B3B5BD] text-base">
+          Mint Date
         </label>
         <input
           type="text"
-          name="Artboard Title"
-          id="Artboard Title"
-          ref={artTitleRef}
+          name="Artist name"
+          id="Artist name"
+          ref={mintDateRef}
           className="focus:bg-transparent bg-[#272832] focus:outline-white focus:outline rounded-md h-11 text-base px-3"
         />
       </div>
       <div className="flex flex-col">
-        <label htmlFor="Location" className="text-[#B3B5BD] text-base">
-          Location
+        <label htmlFor="Mint Price" className="text-[#B3B5BD] text-base">
+          Mint Price
         </label>
         <input
           type="text"
-          name="Location"
-          id="Location"
-          ref={locationRef}
+          name="Artist name"
+          id="Artist name"
+          ref={mintPriceRef}
           className="focus:bg-transparent bg-[#272832] focus:outline-white focus:outline rounded-md h-11 text-base px-3"
         />
       </div>
+      
       <div className="flex flex-col">
-        <label htmlFor="supply" className="text-[#B3B5BD] text-base">
+        <label htmlFor="Supply" className="text-[#B3B5BD] text-base">
           Supply
         </label>
         <input
@@ -128,7 +164,84 @@ const GeneralDescForm = () => {
           className="focus:bg-transparent bg-[#272832] focus:outline-white focus:outline rounded-md h-11 text-base px-3"
         />
       </div>
-      <div className="flex flex-col col-span-2">
+      <div className="flex flex-col">
+        <label htmlFor="royalty" className="text-[#B3B5BD] text-base">
+          Royalty
+        </label>
+        <input
+          type="text"
+          name="Royalty"
+          id="Royalty"
+          ref={royaltyRef}
+          className="focus:bg-transparent bg-[#272832] focus:outline-white focus:outline rounded-md h-11 text-base px-3"
+        />
+      </div>
+      <div className="flex flex-col">
+        <label htmlFor="New Release" className="text-[#B3B5BD] text-base">
+          New Release
+        </label>
+        <select
+          name="New Release"
+          id="New Release"
+          ref={newReleaseRef}
+          className="focus:bg-transparent bg-[#272832] focus:outline-white focus:outline rounded-md h-11 text-base px-3"
+        >
+          <option>Yes</option>
+          <option>No</option>
+          </select>
+      </div>
+      <div></div>
+      <div className="flex flex-col">
+        <label htmlFor="country" className="text-[#B3B5BD] text-base">
+          Country
+        </label>
+        <input
+          type="text"
+          name="country"
+          id="Royalty"
+          ref={countryRef}
+          className="focus:bg-transparent bg-[#272832] focus:outline-white focus:outline rounded-md h-11 text-base px-3"
+        />
+      </div>
+      <div className="flex flex-col">
+        <label htmlFor="city" className="text-[#B3B5BD] text-base">
+          City
+        </label>
+        <input
+          type="text"
+          name="City"
+          id="City"
+          ref={cityRef}
+          className="focus:bg-transparent bg-[#272832] focus:outline-white focus:outline rounded-md h-11 text-base px-3"
+        />
+      </div>
+      <div></div>
+      <div className="flex flex-col">
+        <label htmlFor="NMKR" className="text-[#B3B5BD] text-base">
+          NMKR mint link
+        </label>
+        <input
+          type="text"
+          name="NMKR"
+          id="NMKR"
+          ref={NMKRRef}
+          className="focus:bg-transparent bg-[#272832] focus:outline-white focus:outline rounded-md h-11 text-base px-3"
+        />
+      </div>
+      <div className="flex flex-col">
+        <label htmlFor="JPG" className="text-[#B3B5BD] text-base">
+          JPGstore link
+        </label>
+        <input
+          type="text"
+          name="JPG"
+          id="JPG"
+          ref={JPGRef}
+          className="focus:bg-transparent bg-[#272832] focus:outline-white focus:outline rounded-md h-11 text-base px-3"
+        />
+      </div>
+      
+      <div className="flex flex-col col-span-full">
         <label
           htmlFor="Artboard Description"
           className="text-[#B3B5BD] text-base"
@@ -143,9 +256,9 @@ const GeneralDescForm = () => {
           className="focus:bg-transparent bg-[#272832] focus:outline-white focus:outline rounded-md text-base px-3"
         />
       </div>
-      <div className="flex flex-col col-span-2">
+      <div className="flex flex-col col-span-full">
         <label htmlFor="about me" className="text-[#B3B5BD] text-base">
-          About Me
+          Artist Description
         </label>
         <textarea
           rows={5}
@@ -155,9 +268,9 @@ const GeneralDescForm = () => {
           className="focus:bg-transparent bg-[#272832] focus:outline-white focus:outline h-[150px] rounded-md text-base px-3"
         />
       </div>
-      <div className="flex flex-col col-span-2">
+      <div className="flex flex-col col-span-full">
         <label htmlFor="Minting details" className="text-[#B3B5BD] text-base">
-          Minting Details
+          Other Details
         </label>
         <textarea
           rows={5}
@@ -167,7 +280,7 @@ const GeneralDescForm = () => {
           className="focus:bg-transparent bg-[#272832] focus:outline-white focus:outline h-[150px] rounded-md  text-base px-3"
         />
       </div>
-      <div className="grid grid-cols-3 gap-3 col-span-2">
+      
         <div className="flex flex-col">
           <label htmlFor="Twitter" className="text-[#B3B5BD] text-base">
             Twitter
@@ -204,17 +317,17 @@ const GeneralDescForm = () => {
             className="focus:bg-transparent bg-[#272832] focus:outline-white focus:outline rounded-md h-11 text-base px-3"
           />
         </div>
-      </div>
-      <div className="flex flex-col col-span-2 ">
+      <div className="grid grid-cols-2 gap-3 col-span-full">
+      <div className="flex flex-col  ">
         <span className="text-[#B3B5BD] text-base">
-          Upload your Artboard image
+          Banner
         </span>
         <label
           htmlFor="Artboard image"
           className="focus:bg-transparent bg-[#272832] focus:outline-white focus:outline rounded-md h-[150px] text-base px-3 flex items-center justify-center"
         >
-          {artImage && artImageUrl ?
-            <Image src={artImageUrl} style={{height: '100%'}} />
+          {Banner && BannerUrl ?
+            <Image src={BannerUrl} style={{height: '100%'}} />
             :
             <CameraIcon />
           }
@@ -223,21 +336,21 @@ const GeneralDescForm = () => {
           type="file"
           name="Artboard image"
           id="Artboard image"
-          onChange={(e) => setArtImage(e.target.files[0])}
+          onChange={(e) => setBanner(e.target.files[0])}
           accept="image/png, image/jpeg"
           hidden
         />
       </div>
-      <div className="flex flex-col col-span-2 ">
+      <div className="flex flex-col ">
         <span className="text-[#B3B5BD] text-base">
-          Upload your Artboard location image
+          Artist
         </span>
         <label
           htmlFor="Artboard location image"
           className="focus:bg-transparent bg-[#272832] focus:outline-white focus:outline rounded-md h-[150px] text-base px-3 flex items-center justify-center"
         >
-          {artLocationImage && artLocationImageUrl ?
-            <Image src={artLocationImageUrl} style={{height: '100%'}} />
+          {Artist && ArtistUrl ?
+            <Image src={ArtistUrl} style={{height: '100%'}} />
             :
             <CameraIcon />
           }
@@ -246,21 +359,21 @@ const GeneralDescForm = () => {
           type="file"
           name="Artboard location image"
           id="Artboard location image"
-          onChange={(e) => setArtLocationImage(e.target.files[0])}
+          onChange={(e) => setArtist(e.target.files[0])}
           accept="image/png, image/jpeg"
           hidden
         />
       </div>
-      <div className="flex flex-col col-span-2 ">
+      <div className="flex flex-col ">
         <span className="text-[#B3B5BD] text-base">
-          Upload your personal/working image
+          Digital Artboard
         </span>
         <label
           htmlFor="personal/working image"
           className="focus:bg-transparent bg-[#272832] focus:outline-white focus:outline rounded-md h-[150px] text-base px-3 flex items-center justify-center"
         >
-          {personalImage && personalImageUrl ?
-            <Image src={personalImageUrl} style={{height: '100%'}} />
+          {digitalArtboard && digitalArtboardUrl ?
+            <Image src={digitalArtboardUrl} style={{height: '100%'}} />
             :
             <CameraIcon />
           }
@@ -269,12 +382,38 @@ const GeneralDescForm = () => {
           type="file"
           name="personal/working image"
           id="personal/working image"
-          onChange={(e) => setPersonalImage(e.target.files[0])}
+          onChange={(e) => setdigitalArtboard(e.target.files[0])}
           accept="image/png, image/jpeg"
           hidden
         />
       </div>
+      <div className="flex flex-col  ">
+        <span className="text-[#B3B5BD] text-base">
+        Physical Artboard
+        </span>
+        <label
+          htmlFor="personal/working image"
+          className="focus:bg-transparent bg-[#272832] focus:outline-white focus:outline rounded-md h-[150px] text-base px-3 flex items-center justify-center"
+        >
+          {physicalArtboard && physicalArtboardUrl ?
+            <Image src={physicalArtboard} style={{height: '100%'}} />
+            :
+            <CameraIcon />
+          }
+        </label>
+        <input
+          type="file"
+          name="Physical Artboard"
+          id="Physical Artboard"
+          onChange={(e) => setdigitalArtboard(e.target.files[0])}
+          accept="image/png, image/jpeg"
+          hidden
+        />
+      </div>
+      </div>
+      <div className="grid grid-cols-2 gap-3 col-span-full">
       <footer className=" flex justify-center gap-6  col-span-2">
+      
         <button
           onClick={hideFormHandler}
           className="px-[20px] py-[10px] border border-white rounded-md text-sm"
@@ -285,6 +424,7 @@ const GeneralDescForm = () => {
           Create
         </button>
       </footer>
+      </div>
     </form>
   );
 };

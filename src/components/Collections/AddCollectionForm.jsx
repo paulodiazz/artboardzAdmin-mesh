@@ -6,7 +6,7 @@ import MetadataForm from "./MetadataForm";
 function FormTab(props) {
   return (
     <div className="flex  justify-center gap-10  col-span-2 sticky top-[70px] bg-[#1A1D27] text-xl">
-      <button
+      {/* <button
         className={`${
           props.currentTab === "General Description"
             ? "border-b border-white"
@@ -18,8 +18,8 @@ function FormTab(props) {
         }}
       >
         General Description
-      </button>
-      <button
+      </button> */}
+      {/* <button
         className={`${
           props.currentTab === "Metadata"
             ? "border-b border-white"
@@ -31,7 +31,7 @@ function FormTab(props) {
         }}
       >
         Metadata
-      </button>
+      </button> */}
     </div>
   );
 }
@@ -43,7 +43,7 @@ const AddCollectionForm = () => {
     <Form Title="New Collection">
       <FormTab currentTab={currentTab} setCurrentTab={setCurrentTab} />
       {currentTab === "General Description" && <GeneralDescForm />}
-      {currentTab === "Metadata" && <MetadataForm />}
+      {/* {currentTab === "Metadata" && <MetadataForm />} */}
     </Form>
   );
 };
