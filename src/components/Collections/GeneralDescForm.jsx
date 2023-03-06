@@ -45,13 +45,13 @@ const GeneralDescForm = () => {
       setdigitalArtboardUrl(URL.createObjectURL(digitalArtboard));
     }
     if (physicalArtboard) {
-      setdigitalArtboardUrl(URL.createObjectURL(physicalArtboard));
+      setphysicalArtboardUrl(URL.createObjectURL(physicalArtboard));
     }
     console.log("BannerUrl: ", BannerUrl)
     console.log("ArtistUrl", ArtistUrl)
     console.log("digitalArtboardUrl: ", digitalArtboardUrl)
     console.log("physicalArtboardUrl: ", physicalArtboardUrl)
-  }, [Banner, Artist, digitalArtboard, physicalArtboardUrl]);
+  }, [Banner, Artist, digitalArtboard, physicalArtboard]);
 
   const hideFormHandler = (evt) => {
     evt.preventDefault();
@@ -318,16 +318,24 @@ const GeneralDescForm = () => {
           />
         </div>
       <div className="grid grid-cols-2 gap-3 col-span-full">
-      <div className="flex flex-col  ">
-        <span className="text-[#B3B5BD] text-base">
+      <div className="flex flex-col ">
+        <span className="text-[#B3B5BD] text-base ">
           Banner
         </span>
         <label
           htmlFor="Artboard image"
-          className="focus:bg-transparent bg-[#272832] focus:outline-white focus:outline rounded-md h-[150px] text-base px-3 flex items-center justify-center"
+          className="focus:bg-transparent bg-[#272832] focus:outline-white focus:outline rounded-md h-[150px] text-base px-3 flex items-center justify-center overflow-hidden"
         >
           {Banner && BannerUrl ?
-            <Image src={BannerUrl} style={{height: '100%'}} />
+            // <Image src={BannerUrl} width={280} height={140}  />
+            <div style={{width: '100%', height: '100%', position: 'relative'}}>
+  <Image
+    alt='Banner'
+    src={BannerUrl}
+    fill
+    objectFit='contain'
+  />
+</div>
             :
             <CameraIcon />
           }
@@ -350,7 +358,10 @@ const GeneralDescForm = () => {
           className="focus:bg-transparent bg-[#272832] focus:outline-white focus:outline rounded-md h-[150px] text-base px-3 flex items-center justify-center"
         >
           {Artist && ArtistUrl ?
-            <Image src={ArtistUrl} style={{height: '100%'}} />
+          <div style={{width: '100%', height: '100%', position: 'relative'}}>
+            <Image src={ArtistUrl} fill
+    objectFit='contain' />
+            </div>
             :
             <CameraIcon />
           }
@@ -373,7 +384,10 @@ const GeneralDescForm = () => {
           className="focus:bg-transparent bg-[#272832] focus:outline-white focus:outline rounded-md h-[150px] text-base px-3 flex items-center justify-center"
         >
           {digitalArtboard && digitalArtboardUrl ?
-            <Image src={digitalArtboardUrl} style={{height: '100%'}} />
+          <div style={{width: '100%', height: '100%', position: 'relative'}}>
+            <Image src={digitalArtboardUrl} fill
+    objectFit='contain' />
+            </div>
             :
             <CameraIcon />
           }
@@ -392,11 +406,14 @@ const GeneralDescForm = () => {
         Physical Artboard
         </span>
         <label
-          htmlFor="personal/working image"
+          htmlFor="Physical Artboard"
           className="focus:bg-transparent bg-[#272832] focus:outline-white focus:outline rounded-md h-[150px] text-base px-3 flex items-center justify-center"
         >
           {physicalArtboard && physicalArtboardUrl ?
-            <Image src={physicalArtboard} style={{height: '100%'}} />
+          <div style={{width: '100%', height: '100%', position: 'relative'}}>
+            <Image src={physicalArtboardUrl} fill
+    objectFit='contain'/>
+            </div>
             :
             <CameraIcon />
           }
@@ -405,7 +422,7 @@ const GeneralDescForm = () => {
           type="file"
           name="Physical Artboard"
           id="Physical Artboard"
-          onChange={(e) => setdigitalArtboard(e.target.files[0])}
+          onChange={(e) => setphysicalArtboard(e.target.files[0])}
           accept="image/png, image/jpeg"
           hidden
         />
