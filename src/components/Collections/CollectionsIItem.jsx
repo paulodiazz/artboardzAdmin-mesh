@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import EditForm from './EditForm'
 import { useDispatch } from "react-redux";
-import { TrashIcon } from "@heroicons/react/24/outline";
+import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from "../../Assets/Icons/EditIcon";
 import { UIActions } from "../../store/redux-store/UI-slice";
 import EditCollectionForm from "./EditCollectionForm";
@@ -82,7 +82,7 @@ const CollectionItem = ({
           <EditIcon />
         </button>
         <button onClick={() => confirmDelete(id)}>
-            <TrashIcon className="w-5 h-5" />
+            <DeleteIcon className="w-5 h-5" />
           </button>
       </div>
     </li>
