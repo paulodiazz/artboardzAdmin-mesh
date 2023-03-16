@@ -22,10 +22,10 @@ const CollectorsItems = ({
   return (
     <li className="grid grid-cols-9 py-5 place-items-center text-sm font-semibold tracking-wide break-word border-b border-[#AECEFF] last-of-type:border-none text-[#323A46] relative">
       <div className="w-[48px] aspect-square rounded-full">
-        <Avatar image={image} />
+        <Avatar image={image ? image : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvFFG-hAuwWCF1wpo8rDXVEfoFI4_MTg0V8Q&usqp=CAU"} />
       </div>
       <div>
-        <p className="break-all">{walletAddress}</p>
+        <p className="break-all">{walletAddress.slice(0,5)}...{walletAddress.slice(walletAddress.length - 4)}</p>
       </div>
       <div>
         <p>{artboardTag}</p>
@@ -58,7 +58,9 @@ const CollectorsItems = ({
             Display User
             <input type="checkbox" className="toggle toggle-xs" />
           </p>
+          <button>
           <p>Delete User</p>
+          </button>
         </div>
       )}
     </li>

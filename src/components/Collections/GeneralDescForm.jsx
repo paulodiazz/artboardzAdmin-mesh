@@ -1,30 +1,26 @@
-import React, { useRef, useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import React, { useState, useEffect} from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import axios from 'axios';
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
+import app from "../../firebase";
 import CameraIcon from "../../Assets/Icons/CameraIcon";
+import validation from "./FormValidation";
 import { UIActions } from "../../store/redux-store/UI-slice";
+import CircularProgress from '@mui/material/CircularProgress';
+import { addCollectionFailure, addCollectionStart, addCollectionSuccess } from "../../store/redux-store/CollectionSlice";
 import Image from "next/image";
 
 const GeneralDescForm = () => {
-  const policyRef = useRef();
-  const artistNameRef = useRef();
-  const artTitleRef = useRef();
-  const mintDateRef = useRef();
-  const mintPriceRef = useRef();
-  const newReleaseRef = useRef();
-  const supplyRef = useRef();
-  const royaltyRef= useRef();
-  const countryRef= useRef();
-  const cityRef= useRef();
-  const NMKRRef= useRef();
-  const JPGRef= useRef();
-  const artDescRef = useRef();
-  const aboutMeRef = useRef();
-  const mintingDetailRef = useRef();
-  const twitterRef = useRef();
-  const discordRef = useRef();
-  const instagramRef = useRef();
+  const [inputs, setInputs] = useState({});
   const [Banner, setBanner] = useState(null);
   const [Artist, setArtist] = useState(null);
+  const [errors, setErrors] = useState({});
   const [digitalArtboard, setdigitalArtboard] = useState(null);
   const [physicalArtboard, setphysicalArtboard] = useState(null);
   const dispatch = useDispatch();
@@ -34,6 +30,53 @@ const GeneralDescForm = () => {
   const [ArtistUrl, setArtistUrl] = useState(null);
   const [digitalArtboardUrl, setdigitalArtboardUrl] = useState(null);
   const [physicalArtboardUrl, setphysicalArtboardUrl] = useState(null);
+
+  const handleChange = (e) => {
+    setInputs((prev) => {
+      return { ...prev, [e.target.name]: e.target.value };
+    });
+  };
+
+  const { isFetching } = useSelector((collection) => collection.collection);
+
+  const uploadFile= (file, urlType) => {
+    const storage = getStorage(app);
+    const fileName = new Date().getTime() + file.name;
+    const storageRef = ref(storage, fileName);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+         
+        // urlType === "artImg" ? setImgPerc(Math.round(progress)) : setPersonalImagePer(Math.round(progress));
+        switch (snapshot.state) {
+          case "paused":
+            console.log("Upload is paused");
+            break;
+          case "running":
+            console.log("Upload is running" + progress);
+            break;
+          default:
+            break;
+        }
+      },
+      (error) => {
+        toast.error("Error! Try again")
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          setInputs((prev) => {
+            return { ...prev, [urlType]: downloadURL };
+          });
+          toast.success("Successfully upload photo!")
+        });
+      }
+    );
+  };
+
   useEffect(() => {
     if (Banner) {
       setBannerUrl(URL.createObjectURL(Banner));
@@ -53,40 +96,44 @@ const GeneralDescForm = () => {
     console.log("physicalArtboardUrl: ", physicalArtboardUrl)
   }, [Banner, Artist, digitalArtboard, physicalArtboard]);
 
+  useEffect(() => {
+    Banner && uploadFile(Banner , "bannerUrl");
+  }, [Banner]);
+
+  useEffect(() => {
+    Artist && uploadFile(Artist, "artistUrl");
+  }, [Artist]);
+
+  useEffect(() => {
+    digitalArtboard && uploadFile(digitalArtboard, "digitalArtUrl");
+  }, [digitalArtboard]);
+
+  useEffect(() => {
+    physicalArtboard && uploadFile(physicalArtboard, "physicalArtUrl");
+  }, [physicalArtboard]);
+
   const hideFormHandler = (evt) => {
     evt.preventDefault();
     dispatch(UIActions.hideAddCollectionForm());
     dispatch(UIActions.hideEditCollectionForm());
   };
 
-  const formSubmitHandler = (evt) => {
+  const formSubmitHandler = async(evt) => {
     evt.preventDefault();
-    const GeneralDescData = {
-      policy: policyRef.current.value,
-      artistName: artistNameRef.current.value,
-      artTitle: artTitleRef.current.value,
-      mintDate: mintDateRef.current.value,
-      mintPrice: mintPriceRef.current.value,
-      newrelease: newReleaseRef.current.value,
-      supply: supplyRef.current.value,
-      royalty: royaltyRef.current.value,
-      country: countryRef.current.value,
-      NMKR: NMKRRef.current.value,
-      JPG: JPGRef.current.value,
-      city: cityRef.current.value,
-      artDescription: artDescRef.current.value,
-      aboutMe: aboutMeRef.current.value,
-      mintingDetail: mintingDetailRef.current.value,
-      twitter: twitterRef.current.value,
-      discord: discordRef.current.value,
-      instagram: instagramRef.current.value,
-      Banner: Banner,
-      Artist: Artist,
-      digitalArtboard: digitalArtboard,
-      physicalArtboard: physicalArtboard,
-    
-    };
+    setErrors(validation(inputs))
+    dispatch(addCollectionStart())
+    try {
+      const res = await axios.post('http://localhost:3000/api/collections', inputs)
+      dispatch(UIActions.hideAddCollectionForm())
+      dispatch(addCollectionSuccess(res.data));
+      toast.success("Successfully added")
+    }catch(err) {
+      dispatch(addCollectionFailure())
+      toast.error("Error! something went wrong")
+    }
   };
+
+  console.log(inputs)
 
   return (
     <form className="grid grid-cols-3 gap-4" onSubmit={formSubmitHandler}>
@@ -98,7 +145,7 @@ const GeneralDescForm = () => {
           type="text"
           name="policy"
           id="policy"
-          ref={policyRef}
+          onChange={handleChange}
           className="focus:bg-transparent bg-[#272832] focus:outline-white focus:outline rounded-md h-11 text-base px-3"
         />
       </div>
@@ -109,9 +156,9 @@ const GeneralDescForm = () => {
         </label>
         <input
           type="text"
-          name="Artboard Title"
+          name="title"
           id="Artboard Title"
-          ref={artTitleRef}
+          onChange={handleChange}
           className="focus:bg-transparent bg-[#272832] focus:outline-white focus:outline rounded-md h-11 text-base px-3"
         />
       </div>
@@ -121,9 +168,9 @@ const GeneralDescForm = () => {
         </label>
         <input
           type="text"
-          name="Artist name"
+          name="name"
           id="Artist name"
-          ref={artistNameRef}
+          onChange={handleChange}
           className="focus:bg-transparent bg-[#272832] focus:outline-white focus:outline rounded-md h-11 text-base px-3"
         />
       </div>
@@ -133,9 +180,9 @@ const GeneralDescForm = () => {
         </label>
         <input
           type="text"
-          name="Artist name"
+          name="mintDate"
           id="Artist name"
-          ref={mintDateRef}
+          onChange={handleChange}
           className="focus:bg-transparent bg-[#272832] focus:outline-white focus:outline rounded-md h-11 text-base px-3"
         />
       </div>
@@ -145,9 +192,9 @@ const GeneralDescForm = () => {
         </label>
         <input
           type="text"
-          name="Artist name"
+          name="price"
           id="Artist name"
-          ref={mintPriceRef}
+          onChange={handleChange}
           className="focus:bg-transparent bg-[#272832] focus:outline-white focus:outline rounded-md h-11 text-base px-3"
         />
       </div>
@@ -158,9 +205,9 @@ const GeneralDescForm = () => {
         </label>
         <input
           type="text"
-          name="Supply"
+          name="supply"
           id="Supply"
-          ref={supplyRef}
+          onChange={handleChange}
           className="focus:bg-transparent bg-[#272832] focus:outline-white focus:outline rounded-md h-11 text-base px-3"
         />
       </div>
@@ -170,9 +217,9 @@ const GeneralDescForm = () => {
         </label>
         <input
           type="text"
-          name="Royalty"
+          name="royalty"
           id="Royalty"
-          ref={royaltyRef}
+          onChange={handleChange}
           className="focus:bg-transparent bg-[#272832] focus:outline-white focus:outline rounded-md h-11 text-base px-3"
         />
       </div>
@@ -181,13 +228,13 @@ const GeneralDescForm = () => {
           New Release
         </label>
         <select
-          name="New Release"
+          name="newRelease"
           id="New Release"
-          ref={newReleaseRef}
+          onChange={handleChange}
           className="focus:bg-transparent bg-[#272832] focus:outline-white focus:outline rounded-md h-11 text-base px-3"
         >
-          <option>Yes</option>
-          <option>No</option>
+          <option value="0">No</option>
+          <option value="1">Yes</option>
           </select>
       </div>
       <div></div>
@@ -199,7 +246,7 @@ const GeneralDescForm = () => {
           type="text"
           name="country"
           id="Royalty"
-          ref={countryRef}
+          onChange={handleChange}
           className="focus:bg-transparent bg-[#272832] focus:outline-white focus:outline rounded-md h-11 text-base px-3"
         />
       </div>
@@ -209,9 +256,9 @@ const GeneralDescForm = () => {
         </label>
         <input
           type="text"
-          name="City"
+          name="city"
           id="City"
-          ref={cityRef}
+          onChange={handleChange}
           className="focus:bg-transparent bg-[#272832] focus:outline-white focus:outline rounded-md h-11 text-base px-3"
         />
       </div>
@@ -222,9 +269,9 @@ const GeneralDescForm = () => {
         </label>
         <input
           type="text"
-          name="NMKR"
+          name="nmkrLink"
           id="NMKR"
-          ref={NMKRRef}
+          onChange={handleChange}
           className="focus:bg-transparent bg-[#272832] focus:outline-white focus:outline rounded-md h-11 text-base px-3"
         />
       </div>
@@ -234,9 +281,9 @@ const GeneralDescForm = () => {
         </label>
         <input
           type="text"
-          name="JPG"
+          name="jpgLink"
           id="JPG"
-          ref={JPGRef}
+          onChange={handleChange}
           className="focus:bg-transparent bg-[#272832] focus:outline-white focus:outline rounded-md h-11 text-base px-3"
         />
       </div>
@@ -250,9 +297,9 @@ const GeneralDescForm = () => {
         </label>
         <textarea
           rows={5}
-          name="Artboard Description"
+          name="artDesc"
           id="Artboard Description"
-          ref={artDescRef}
+          onChange={handleChange}
           className="focus:bg-transparent bg-[#272832] focus:outline-white focus:outline rounded-md text-base px-3"
         />
       </div>
@@ -264,7 +311,7 @@ const GeneralDescForm = () => {
           rows={5}
           name="aboutMe"
           id=" about me"
-          ref={aboutMeRef}
+          onChange={handleChange}
           className="focus:bg-transparent bg-[#272832] focus:outline-white focus:outline h-[150px] rounded-md text-base px-3"
         />
       </div>
@@ -276,7 +323,7 @@ const GeneralDescForm = () => {
           rows={5}
           name="mintingDetails"
           id="Minting details"
-          ref={mintingDetailRef}
+          onChange={handleChange}
           className="focus:bg-transparent bg-[#272832] focus:outline-white focus:outline h-[150px] rounded-md  text-base px-3"
         />
       </div>
@@ -287,11 +334,12 @@ const GeneralDescForm = () => {
           </label>
           <input
             type="url"
-            name="Twitter"
+            name="twitter"
             id="Twitter"
-            ref={twitterRef}
+            onChange={handleChange}
             className="focus:bg-transparent bg-[#272832] focus:outline-white focus:outline rounded-md h-11 text-base px-3"
           />
+          {errors.twitter && <p className="text-red-400">{errors.twitter}</p>}
         </div>
         <div className="flex flex-col">
           <label htmlFor="Discord" className="text-[#B3B5BD] text-base">
@@ -299,11 +347,12 @@ const GeneralDescForm = () => {
           </label>
           <input
             type="url"
-            name="Discord"
+            name="discord"
             id="Discord"
-            ref={discordRef}
+            onChange={handleChange}
             className="focus:bg-transparent bg-[#272832] focus:outline-white focus:outline rounded-md h-11 text-base px-3"
           />
+          {errors.discord && <p className="text-red-400">{errors.discord}</p>}
         </div>
         <div className="flex flex-col">
           <label htmlFor="Instagram" className="text-[#B3B5BD] text-base">
@@ -311,11 +360,12 @@ const GeneralDescForm = () => {
           </label>
           <input
             type="url"
-            name="Instagram"
+            name="instagram"
             id="Instagram"
-            ref={instagramRef}
+            onChange={handleChange}
             className="focus:bg-transparent bg-[#272832] focus:outline-white focus:outline rounded-md h-11 text-base px-3"
           />
+          {errors.instagram && <p className="text-red-400">{errors.instagram}</p>}
         </div>
       <div className="grid grid-cols-2 gap-3 col-span-full">
       <div className="flex flex-col ">
@@ -342,10 +392,10 @@ const GeneralDescForm = () => {
         </label>
         <input
           type="file"
-          name="Artboard image"
+          name="ArtImage"
           id="Artboard image"
           onChange={(e) => setBanner(e.target.files[0])}
-          accept="image/png, image/jpeg"
+          accept="image/png, image/jpeg image/jpg"
           hidden
         />
       </div>
@@ -437,9 +487,14 @@ const GeneralDescForm = () => {
         >
           Cancel
         </button>
-        <button className="px-[20px] py-[10px] bg-[#4C66F0] rounded-md text-sm">
-          Create
-        </button>
+        {isFetching ? (
+          <button className="px-[20px] py-[10px] bg-blue-400 rounded-md text-sm cursor-not-allowed">
+            Saving...
+          </button>):(
+            <button className="px-[20px] py-[10px] bg-[#4C66F0] rounded-md text-sm">
+            Create
+          </button>
+        )}
       </footer>
       </div>
     </form>

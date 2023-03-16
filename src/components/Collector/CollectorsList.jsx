@@ -1,4 +1,7 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getCollectorFailure, getCollectorStart, getCollectorSuccess } from "../../store/redux-store/CollectorSlice";
 import CollectorsItems from "./CollectorsItems";
 
 const DUMMY_DATA = [
@@ -39,14 +42,30 @@ const DUMMY_DATA = [
 ];
 
 const CollectorsList = () => {
+  const dispatch = useDispatch()
+  const collectors = useSelector((collector) => collector.collector.collectors)
+  
+  useEffect(() => {
+    const getCollectors = async() => {
+      dispatch(getCollectorStart());
+      try {
+        const res = await axios.get("http://localhost:3000/api/collectors");
+        dispatch(getCollectorSuccess(res.data));
+      }catch(err) {
+        dispatch(getCollectorFailure())
+      }
+    }
+    getCollectors();
+  },[])
+
   return (
     <ul className="px-5">
-      {DUMMY_DATA.map((data, index) => {
+      {collectors.map((data, index) => {
         return (
           <CollectorsItems
             key={index}
             image={data.image}
-            walletAddress={data.walletAddress}
+            walletAddress={data.stakeAddress}
             artboardTag={data.artboardTag}
             nationality={data.nationality}
             twitter={data.twitter}

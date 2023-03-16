@@ -18,7 +18,7 @@ const CollectionListHeader = () => {
           <p>Location</p> <TrafficIcon />
         </div>
         <div className="flex gap-2 items-center">
-          <p>Supply Time</p> <TrafficIcon />
+          <p>Supply</p> <TrafficIcon />
         </div>
         <div>
           <p>Action</p>

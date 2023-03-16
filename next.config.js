@@ -4,11 +4,12 @@ const nextConfig = {
   webpack: function (config, options) {
     config.experiments = {
       asyncWebAssembly: true,
+      layers: true
     };
     return config;
   },
   images: {
-    domains: ["encrypted-tbn0.gstatic.com", "images.unsplash.com"],
+    domains: ["encrypted-tbn0.gstatic.com", "images.unsplash.com", "firebasestorage.googleapis.com"],
   }
 };
 module.exports = nextConfig;
